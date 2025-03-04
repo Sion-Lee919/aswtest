@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<input type="button" id="start" value="위치추적시작">
+<input type="button" id="stop" value="위치추적종료">
+<div id="result">위치결과</div>
+</body>
+<script>
+let watchid;
+document.getElementById("start").onclick = function(){
+	watchid = window.navigator.geolocation.watchPosition(success,fail);
+}
+
+document.getElementById("stop").onclick = function(){
+	window.navigator.geolocation.clearWatch(watchid);
+}
+
+function successs(myposition){//위치정보객체
+	//위도필수, 경도필수, 고도 옵션  (북위 36-38, 동경 126-128)
+	let lat = myposition.coords.latitude;//위도
+	let lng = myposition.coords.longitude;//경도
+	document.getElementById("result").innerHTML = "나의 위도 = " + lat + ", 경도 = " + lng;
+	window.open("http://www.google.co.kr/maps/?p=","창이름","옵션");
+	window.open("http://www.google.com/maps?q=" +lat+","+lng, "googleMap", "width=800,height=600");
+	window.open("http://map.kakao.com/?p=" +lat+","+lng,"kakaoMap", "width=800,height=600");
+	window.open("http://map.naver.com/v5/?p="+lat+","+lng, "naverMap", "width=800,height=600");
+
+}
+
+function fail(error){//오류정보객체
+	document.getElementById("result").innerHTML = "오류발생" + error.code + " : "+ error.message;
+}
+</script>
+</html>
